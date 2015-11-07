@@ -1,0 +1,10 @@
+os.loadAPI("build")
+--create a road
+while true do
+
+turtle.dig()
+turtle.forward()
+turtle.digUp()
+build.placeDown()
+
+end

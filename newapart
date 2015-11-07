@@ -1,0 +1,39 @@
+--apartment 
+--builds an apartment like building 
+os.loadAPI("reload")
+os.loadAPI("build")
+
+args={...}
+
+--first argument is number of levels
+numlevel=0
+numlevel=args[1]
+
+--second argument is width of building. 
+--building is a square.
+width=0
+width=args[2]
+
+--third argument is height of the rooms
+roomheight=0
+roomheight=args[3]
+
+
+
+
+
+
+--lay a one block thick layer of the room.
+
+
+--build a one block thick layer of wall
+
+
+
+build.floor(width)--lay foundation
+--consturct the building
+for l=1,numlevel do
+build.room(roomheight,width)
+build.floor(width)--add a roof
+walllayer=1
+end

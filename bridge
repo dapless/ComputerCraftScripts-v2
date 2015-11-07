@@ -1,0 +1,24 @@
+--bridge builds a bridge 3 blocks wide
+os.loadAPI("reload")
+
+distance=0 --how far down the turtle has moved down to make the column
+function down()
+while not turtle.detectDown()
+turtle.down()
+distance = distance +1
+end
+end
+
+--every fourth block drop a column down to the ground.
+while not turtle.detect() --keep building the bridge until the turtle hits something.
+for i=1,3 do--lay the sections between columns.
+turtle.forward()
+turtle.placeDown()
+end
+turtle.forward()
+down()
+for d=1,distance do
+turtle.up()
+turtle.placeDown()
+end
+end

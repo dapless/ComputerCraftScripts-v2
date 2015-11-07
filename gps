@@ -1,0 +1,175 @@
+-- positioning system
+
+--going to take care of all movement.
+
+--[[
+forward starts as f cord
+right of forward is r coord
+left of forward is l coord
+--]]
+forback=0--north pos south neg
+leftright=0 --east is pos west neg
+height=0
+direction=1
+--[[
+1=north
+2=east
+3=south
+4=west
+--]]
+function getDirection()
+return direction
+end
+
+function forward(howfar,avoid)
+howfar=howfar or 1
+for d=1,howfar do
+--avoid colisions
+if avoid==false then
+build.dig()
+else
+
+while turtle.detect() do
+up()
+end
+end
+
+if turtle.forward() then
+	if direction==1 then--facing north
+		forback=forback+1
+	elseif direction==3 then--facing south
+		forback=forback-1
+	elseif direction==2 then --facing east
+		leftright=leftright+1
+	else 					--facing west
+		leftright=leftright-1
+	end
+end
+end
+end
+
+function turnRight()
+turtle.turnRight()
+if direction<4 then
+direction=direction+1
+else direction=1
+end
+end
+
+function facedirection(newdir)
+while direction~=newdir do
+turnRight()
+end
+end
+
+function turnLeft()
+turtle.turnLeft()
+if direction>1 then
+direction=direction-1
+else direction=4
+end
+end
+
+function down(distance)
+distance=distance or 1
+for d=1,distance do
+if turtle.down()then
+height=height-1
+
+else
+
+print("obstruction below me!")
+print("can't procede")
+error()
+end
+end
+end
+
+function up()
+if turtle.up()then
+height=height+1
+else
+print("obstruction above me!")
+print("can't procede")
+
+error()
+end
+
+end
+
+function goto(northsouth,eastwest,destheight)
+--go to pos in northsouth
+while forback<northsouth do
+--face proper direction
+while direction~=1 do
+	turnRight()
+end
+forward()
+end
+
+--go to neg in north south
+while forback>northsouth do
+--face proper direction
+while direction~=3 do
+	turnRight()
+end
+forward()
+end
+
+--go to pos in east west
+while leftright<eastwest do
+--face proper direction
+while direction~=2 do
+	turnRight()
+end
+forward()
+end
+
+--go to neg in east west
+while leftright>eastwest do
+--face proper direction
+while direction~=4 do
+	turnRight()
+end
+forward()
+end
+
+--figure height
+
+while height<destheight do
+	up()
+end
+
+while height >destheight do
+down()
+end
+
+end
+
+function strafeNorth(distance)
+ogdir=direction
+facedirection(1)
+forward(distance,false)
+facedirection(ogdir)
+end
+
+function strafeEast(distance)
+ogdir=direction
+facedirection(2)
+forward(distance,false)
+facedirection(ogdir)
+end
+
+function strafeSouth(distance)
+ogdir=direction
+facedirection(3)
+forward(distance,false)
+facedirection(ogdir)
+end
+
+function strafeWest()
+ogdir=direction
+facedirection(4)
+forward(distance,false)
+facedirection(ogdir)
+end

@@ -1,0 +1,17 @@
+--build a roof
+
+os.loadAPI("build")
+os.loadAPI("gps")
+
+print("How wide?")
+width=read()
+
+print("How deep?")
+depth=read()
+
+print("How many blocks tall should the slope be?")
+slopeHeightLimit=read()
+
+build.roof(width,depth,slopeHeightLimit)
+
+gps.goto(0,0,0)

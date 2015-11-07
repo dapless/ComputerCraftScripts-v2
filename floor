@@ -1,0 +1,11 @@
+os.loadAPI("build")
+os.loadAPI("gps")
+
+print("width? ")
+width=read()
+
+print("length? ")
+length=read()
+build.floor(width,length)
+
+gps.goto(0,0,0)

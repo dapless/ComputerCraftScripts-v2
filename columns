@@ -1,0 +1,15 @@
+--build a row of columns
+os.loadAPI("build")
+os.loadAPI("gps")
+
+print("how long is the row?")
+length=read()
+print("how tall are the columns?")
+height=read()
+print("how far apart are the cols?")
+spacing=read()
+
+build.rowofcols(length,height,spacing)
+
+gps.goto(0,0,0)
+facedirection(1)

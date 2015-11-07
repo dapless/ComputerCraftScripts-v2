@@ -1,0 +1,226 @@
+--a list of usefull general purpose constructioin functions.
+
+os.loadAPI("gps")
+
+walllayer=1 --keeps track of what layer the wall is at
+blocknumber=0 --what number block was just layed in the wall layer
+floorflag=0 --keeps track of what direction to turn next.
+--if 0 then left
+--if 1 then right
+
+window=0--decides if there should be a window
+--build a floor
+floorflag=1
+curslot=1
+
+function floor(width,length)
+
+for k=1, width do
+for f=1, length do
+digDown()
+placeDown()
+dig()
+gps.forward()
+end
+if (k<tonumber(width)) then
+	if floorflag==1 then
+		gps.turnRight()
+		dig()
+		gps.forward()
+		gps.turnRight()
+		dig()
+		gps.forward()
+		floorflag=0
+		
+	else 
+		gps.turnLeft()
+		dig()
+		gps.forward()
+		gps.turnLeft()
+		dig()
+		gps.forward()
+		floorflag=1
+	end
+else
+	gps.turnRight()
+	gps.turnRight()
+	gps.up()
+	gps.forward()
+end
+
+
+end
+print("done with floor")
+end
+
+--make turtle go down until it hits ground
+function down()
+while not turtle.detectDown() do
+gps.down()
+end end
+
+function column(height)
+for h=1,height do
+gps.up()
+placeDown()
+end end
+
+
+-- build 4 walls 
+function room(roomheight,width,length)--1st arg is hieght, second is width
+
+for j=1,roomheight do
+layer(width,length)
+gps.up()
+end
+end
+
+function layer(width,length)
+	for o=1,4 do
+	if (o==1) or (o==3) then
+		wall(length)
+	else
+		wall(width)
+	end
+	gps.turnRight()
+	end
+	walllayer=walllayer+1
+
+end
+
+function wall(width)
+
+	for i=1,width-1 do 
+		print("wall layer: ",walllayer)
+		print("block number: ",blocknumber)
+		placeDown()
+		gps.forward(1,true)
+	end
+end
+
+function tallwall(width,height)--build a wall of arbitrary height
+gps.up()
+for h=0,height do
+wall(width)
+if gps.getDirection()==1 then
+gps.facedirection(3)
+placeDown()
+gps.up()
+else 
+gps.facedirection(1)
+placeDown()
+gps.up()
+
+end end end
+	
+	
+	
+function reload()
+	turtle.select(curslot)
+	slotquantity=turtle.getItemCount(curslot)
+	if slotquantity==0 then
+		while turtle.getItemCount(curslot)==0 do
+		curslot = curslot +1
+	if curslot == 17 then 
+		print("no more material!")
+		curslot =1
+	end 
+	turtle.select(curslot)
+end end end
+
+function placeDown()
+digDown()
+reload()
+turtle.placeDown()
+end
+
+function place()
+reload()
+turtle.place()
+end
+
+function digDown()
+turtle.select(16)
+turtle.digDown()
+turtle.dropDown(16)
+turtle.select(curslot)
+end
+
+function dig()
+turtle.select(16)
+turtle.dig()
+turtle.dropDown(16)
+turtle.select(curslot)
+end
+
+function grid(gridwidth,spacing)
+local avoid =false
+for k=1, gridwidth do
+for f=1, gridwidth do
+digDown()
+placeDown()
+dig()
+gps.forward(spacing,false)
+end
+if (k<tonumber(gridwidth)) then
+	if floorflag==1 then
+		gps.turnRight()
+		dig()
+		gps.forward(spacing,false)
+		gps.turnRight()
+		dig()
+		gps.forward(spacing,false)
+		floorflag=0
+		
+	else 
+		gps.turnLeft()
+		dig()
+		gps.forward(spacing,false)
+		gps.turnLeft()
+		dig()
+		gps.forward(spacing,false)
+		floorflag=1
+	end
+else
+	
+end end
+print("done with grid")
+end
+
+function roofLayer(width,depth)
+	for o=1,4 do
+	if (o==1) or (o==3) then
+		wall(depth)
+	else
+		wall(width)
+	end
+	gps.turnRight()
+	end
+	walllayer=walllayer+1
+end
+
+function roof(width,depth,slopeLimit)
+gps.up()
+for g=1,slopeLimit do
+roofLayer(width,depth)
+width=width-2
+depth=depth-2
+gps.up()
+gps.strafeEast(1)
+gps.strafeNorth(1)
+gps.facedirection(1)
+end
+floor(width,depth)
+facedirection(1)
+end
+
+function rowofcols(length,height,spacing)
+l=0
+while l<tonumber(length) do
+column(height)
+
+gps.forward(spacing,false)
+gps.down(height)
+l=l+spacing
+end
+end

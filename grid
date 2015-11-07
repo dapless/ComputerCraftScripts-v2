@@ -1,0 +1,10 @@
+os.loadAPI("build")
+os.loadAPI("gps")
+--build a grid system for easy building
+--usage: grid(size,spacing)
+print("rows/cols? ")
+size=read()
+print("width of each cell?")
+space=read()
+build.grid(size,space)
+gps.goto(0,0,0)

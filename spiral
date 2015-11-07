@@ -1,0 +1,42 @@
+--build a spiral staircase
+
+os.loadAPI("reload")
+
+
+
+--first argument is height
+--second is tightness of spiral
+--the spiral tightness refers to the length of each side of the spiral.
+curheight=0
+maxheight=0
+side=0
+
+
+print("height? ")
+maxheight = tonumber(read())
+print(maxheight)
+print("length of side? ")
+side = tonumber(read())
+print(side)
+
+function side()
+j=1
+while j<5 do
+turtle.up()
+reload.r()
+turtle.forward()
+turtle.placeDown()
+curheight = curheight+1
+j=j+1
+end
+end
+
+while curheight<maxheight do 
+
+side()
+turtle.turnRight()
+turtle.placeDown()
+turtle.forward()--creates room at the bottom of each stair section to leave room for the stair block
+turtle.placeDown()
+
+end

@@ -1,0 +1,9 @@
+--build a wall
+os.loadAPI("build")
+os.loadAPI("gps")
+print("wall height")
+height=read()
+print("wall length")
+length=read()
+build.tallwall(length,height)
+gps.goto(0,0,0)

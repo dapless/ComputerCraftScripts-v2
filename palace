@@ -1,0 +1,74 @@
+--build a palace
+os.loadAPI("gps")
+os.loadAPI("build")
+
+buildroom=  false
+buildhall=   true
+buildcolumn=false
+buildfloor= false
+buildendroom=true
+
+roomheight=1
+
+gps.up()
+if buildfloor then
+build.floor(7,14)
+end
+
+if buildhall then
+build.room(roomheight,7,14)--build main hall
+end
+
+if buildroom then
+gps.goto(0,-7,1)--build a room off hall
+gps.facedirection(1)
+if buildfloor then
+build.floor(7,7)
+end
+build.room(roomheight,7,7)
+
+gps.goto(7,-7,1)--build second room off hall
+gps.facedirection(1)
+if buildfloor then
+build.floor(7,7)
+end
+build.room(roomheight,7,7)
+end
+
+if buildcolumn then
+--build some columns
+gps.goto(2,1,1)
+build.column(4)
+
+gps.goto(2,5,1)
+build.column(4)
+
+gps.goto(4,1,1)
+build.column(4)
+
+gps.goto(4,5,1)
+build.column(4)
+
+gps.goto(9,1,1)
+build.column(4)
+
+gps.goto(9,5,1)
+build.column(4)
+
+gps.goto(11,1,1)
+build.column(4)
+
+gps.goto(11,5,1)
+build.column(4)
+end
+if buildendroom then
+--build room at end of hall
+gps.goto(14,-3,1)
+gps.facedirection(1)
+if buildfloor then
+build.floor(13,26)
+end
+build.room(roomheight,13,26)
+end
+--return to start
+gps.goto(-1,0,0)

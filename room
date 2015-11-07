@@ -1,0 +1,13 @@
+
+os.loadAPI("build")
+os.loadAPI("gps")
+
+print("how wide?")
+local width=read()
+print("how deep?")
+local depth=read()
+print("how tall?")
+local height=read()
+gps.up()
+build.room(height,width,depth)
+gps.goto(0,0,0)
