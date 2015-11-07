@@ -173,3 +173,13 @@ facedirection(4)
 forward(distance,false)
 facedirection(ogdir)
 end
+
+function sync() 
+--attempts to sync position with nearby turtles,
+--turtles must be in a row, left or bottommost turtle
+--becomes origin all other ccoordinate possitions are 
+--adjusted accordingly
+
+end
+				
+				
