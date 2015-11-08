@@ -21,6 +21,14 @@ function getDirection()
 return direction
 end
 
+function getforback()
+return forback
+end
+
+function getleftright()
+return leftright
+end
+
 function forward(howfar,avoid)
 howfar=howfar or 1
 for d=1,howfar do
@@ -31,20 +39,39 @@ else
 
 while turtle.detect() do
 up()
+if turtle.detectUp() then
+break
+end
 end
 end
 
 if turtle.forward() then
 	if direction==1 then--facing north
 		forback=forback+1
+		return true
 	elseif direction==3 then--facing south
 		forback=forback-1
+		return true
 	elseif direction==2 then --facing east
 		leftright=leftright+1
+		return true
 	else 					--facing west
 		leftright=leftright-1
+		return true
 	end
+else--if it's out of fuel attempt to refuel
+refuel()
+return false
 end
+end
+end
+
+function refuel()
+for i = 1, 16 do -- loop through the slots
+  turtle.select(i) -- change to the slot
+  if turtle.refuel(0) then -- if it's valid fuel
+    turtle.refuel(64)
+  end
 end
 end
 
@@ -70,17 +97,24 @@ else direction=4
 end
 end
 
+function fullDown()--go down until hit ground
+while down() do
+end
+end
+
 function down(distance)
 distance=distance or 1
 for d=1,distance do
 if turtle.down()then
 height=height-1
-
+return true
 else
 
-print("obstruction below me!")
-print("can't procede")
-error()
+refuel()
+
+print("can't procede down")
+return false
+--error()
 end
 end
 end
@@ -88,16 +122,19 @@ end
 function up()
 if turtle.up()then
 height=height+1
+return true
 else
-print("obstruction above me!")
-print("can't procede")
-
-error()
+refuel()
+print("can't procede up")
+return false
+--error()
 end
 
 end
 
 function goto(northsouth,eastwest,destheight)
+
+destheight=destheight or height
 --go to pos in northsouth
 while forback<northsouth do
 --face proper direction
@@ -146,39 +183,77 @@ end
 
 end
 
-function strafeNorth(distance)
+function strafeNorth(distance,faceorigonal,avoid)
 ogdir=direction
+avoid=avoid or false
 facedirection(1)
-forward(distance,false)
+truth=forward(distance,avoid)
+if faceorigonal then
 facedirection(ogdir)
 end
+return truth
+end
 
-function strafeEast(distance)
+function strafeEast(distance,faceorigonal,avoid)
 ogdir=direction
+avoid=avoid or false--by defualt break blocks that are in the way
 facedirection(2)
-forward(distance,false)
+truth=forward(distance,avoid)
+if faceorigonal then
 facedirection(ogdir)
 end
+return truth
+end
 
-function strafeSouth(distance)
+function strafeSouth(distance,faceorigonal,avoid)
 ogdir=direction
+avoid=avoid or false
 facedirection(3)
-forward(distance,false)
+truth=forward(distance,avoid)
+if faceorigonal then
 facedirection(ogdir)
 end
+return truth
+end
 
-function strafeWest()
+function strafeWest(distance,faceorigonal,avoid)
 ogdir=direction
+avoid=avoid or false
 facedirection(4)
-forward(distance,false)
+truth=forward(distance,avoid)
+if faceorigonal then
 facedirection(ogdir)
 end
+return truth
+end
 
-function sync() 
---attempts to sync position with nearby turtles,
---turtles must be in a row, left or bottommost turtle
---becomes origin all other ccoordinate possitions are 
---adjusted accordingly
+function randomMove()
+--make turtle move a random block in any direction.
+thisway=math.random(4)
+if thisway==1 then
+	if strafeNorth(1,false,true) then
+	return true
+	end end
+if thisway==2 then
+	if strafeSouth(1,false,true) then
+	return true
+	end end
+if thisway==3 then
+	if strafeEast(1,false,true) then
+	return true
+	end end
+if thisway==4 then
+	if strafeWest(1,false,true) then
+	return true
+	end end
+--[[if direction==5 then
+	if up() then
+	return true
+	end end
+if direction==6 then
+	if down() then
+	return true
+	end end--]]
 
 end
 				

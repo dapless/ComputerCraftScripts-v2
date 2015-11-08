@@ -1,0 +1,57 @@
+--move randomly until encounter player then attack.
+--when player is found broadcast position let other robots swarm towards player.
+
+--all robots must be released from same tile for this to work.
+
+os.loadAPI("gps")
+os.loadAPI("build")
+rednet.open("right")
+local x=0
+local y=0
+while true do
+--before move see if someone found something
+local senderId, message, protocol =rednet.receive(2)--wait two sec
+if message==nil then
+	message="nil"
+	end
+for word in string.gmatch(message, "%d") do--parse incoming coords to that they can be fed to goto func.
+local i=1
+
+--coords[i]=word
+if i==1 then
+x=word
+end
+if i==2 then
+y=word
+end
+i=i+1
+end
+  print("recieved: "..x.." "..y)
+--if x~=0 and y~=0 then--if coords were recieved head to that locatin.
+--if x and y arne't 0 move, ( if it isn't the start space)
+--print("recieved: "..x.." "..y)
+gps.goto(tonumber(x),tonumber(y))
+--end
+
+
+ 
+
+
+	
+if not gps.randomMove() then--if you can't move or detect anything then it must be a mob, therefore attack.
+	if not turtle.detect() then
+		turtle.attack()-- if there was an attac broadcast coords so other robots can help
+		coordinates=tostring(gps.getforback())
+		coordinates=coordinates.." "..tostring(gps.getleftright())
+		rednet.broadcast(coordinates)
+		print("broadcasted: "..coordinates)
+		--gps.goto(0,0,0)--totally works
+		
+		
+		end
+		end
+gps.fullDown()--go back to ground level.
+end
+
+
+gps.goto(0,0,0)

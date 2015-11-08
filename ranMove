@@ -1,0 +1,6 @@
+os.loadAPI("gps")
+os.loadAPI("build")
+--move randomly
+while true do
+gps.randomMove()
+end
