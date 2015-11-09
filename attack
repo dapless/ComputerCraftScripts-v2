@@ -5,7 +5,7 @@
 
 os.loadAPI("gps")
 os.loadAPI("build")
-rednet.open("right")
+rednet.open("left")
 local x=0
 local y=0
 while true do

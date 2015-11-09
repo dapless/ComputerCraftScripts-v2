@@ -14,38 +14,56 @@ floorflag=1
 curslot=1
 
 function floor(width,length)
-
+digDown()--first block is special case
+placeDown()
 for k=1, width do
-for f=1, length do
+for f=1, length-1 do
 digDown()
 placeDown()
 dig()
+print("f is "..f)
+if f<tonumber(length) then
 gps.forward()
+
+end
 end
 if (k<tonumber(width)) then
-	if floorflag==1 then
+	if floorflag==1 then	
+		digDown()--place block at end of row
+		placeDown()
 		gps.turnRight()
 		dig()
 		gps.forward()
 		gps.turnRight()
+		digDown()--place block at start of row
+		placeDown()
 		dig()
-		gps.forward()
+		--gps.forward()
+--		gps.goto(gps.getforback(),gps.getleftright(),0)--go back to ground level if the turtle had to go up to make the floor.
+
 		floorflag=0
 		
-	else 
+	else --turn the oposite way
+		digDown()
+		placeDown()
 		gps.turnLeft()
 		dig()
 		gps.forward()
 		gps.turnLeft()
 		dig()
-		gps.forward()
+		digDown()
+		placeDown()
+		--gps.forward()
 		floorflag=1
 	end
 else
-	gps.turnRight()
+digDown()
+placeDown()--last blcok is also special case
+
+	--[[gps.turnRight()
 	gps.turnRight()
 	gps.up()
-	gps.forward()
+	gps.forward()--]]
 end
 
 

@@ -30,6 +30,7 @@ return leftright
 end
 
 function forward(howfar,avoid)
+attempt=0
 howfar=howfar or 1
 for d=1,howfar do
 --avoid colisions
@@ -61,6 +62,10 @@ if turtle.forward() then
 	end
 else--if it's out of fuel attempt to refuel
 refuel()
+attempt=attempt+1
+if attempt<2 then
+	forward()--try again after refuel but only once.
+	end
 return false
 end
 end
@@ -98,7 +103,8 @@ end
 end
 
 function fullDown()--go down until hit ground
-while down() do
+while not turtle.detectDown() do
+down()
 end
 end
 
@@ -123,9 +129,13 @@ function up()
 if turtle.up()then
 height=height+1
 return true
-else
-refuel()
-print("can't procede up")
+else--the first attempt failed but maybe it was becuase it was out of fuel
+	refuel()
+	if turtle.up()then--try again after the turtle has been refueld.
+		height=height+1
+		return true
+		end
+print("can't procede up")--if turtle still can't procede then print error and return false.
 return false
 --error()
 end
