@@ -18,6 +18,8 @@ digDown()--first block is special case
 placeDown()
 for k=1, width do
 for f=1, length-1 do
+gps.goto(gps.getforback(),gps.getleftright(),0)--make sure you're at the right height before laying any blocks.
+
 digDown()
 placeDown()
 dig()
@@ -39,7 +41,6 @@ if (k<tonumber(width)) then
 		placeDown()
 		dig()
 		--gps.forward()
---		gps.goto(gps.getforback(),gps.getleftright(),0)--go back to ground level if the turtle had to go up to make the floor.
 
 		floorflag=0
 		
@@ -53,6 +54,7 @@ if (k<tonumber(width)) then
 		dig()
 		digDown()
 		placeDown()
+
 		--gps.forward()
 		floorflag=1
 	end

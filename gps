@@ -184,11 +184,15 @@ end
 --figure height
 
 while height<destheight do
-	up()
+	if not up()then
+	return false
+	end
 end
 
 while height >destheight do
-down()
+if not down() then
+return false
+end
 end
 
 end
