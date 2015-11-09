@@ -10,11 +10,11 @@ local x=0
 local y=0
 while true do
 --before move see if someone found something
-local senderId, message, protocol =rednet.receive(2)--wait two sec
+local senderId, message, protocol =rednet.receive(2)--wait two sec for incoming messages
 if message==nil then
 	message="nil"
 	end
-for word in string.gmatch(message, "%d") do--parse incoming coords to that they can be fed to goto func.
+for word in string.gmatch(message, "%s") do--parse incoming coords to that they can be fed to goto func.
 local i=1
 
 --coords[i]=word

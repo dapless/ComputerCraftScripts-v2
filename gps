@@ -62,10 +62,7 @@ if turtle.forward() then
 	end
 else--if it's out of fuel attempt to refuel
 refuel()
-attempt=attempt+1
-if attempt<2 then
-	forward()--try again after refuel but only once.
-	end
+
 return false
 end
 end
@@ -247,18 +244,26 @@ thisway=math.random(4)
 if thisway==1 then
 	if strafeNorth(1,false,true) then
 	return true
+	else 
+	return false
 	end end
 if thisway==2 then
 	if strafeSouth(1,false,true) then
 	return true
+	else
+	 return false
 	end end
 if thisway==3 then
 	if strafeEast(1,false,true) then
 	return true
+	else
+	 return false
 	end end
 if thisway==4 then
 	if strafeWest(1,false,true) then
 	return true
+	else
+	 return false
 	end end
 --[[if direction==5 then
 	if up() then
