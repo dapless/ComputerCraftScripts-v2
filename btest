@@ -1,0 +1,17 @@
+--[[
+broadcast test, send out a constant
+signal to test the homing abilities
+of turtles.
+--]]
+
+--assuming wireless transmitter is on top
+
+rednet.open("top")
+while true do
+part1=tostring(math.random(9))
+part2=tostring(math.random(9))
+message=part1.." "..part2
+rednet.broadcast(message)
+print("broadcasted: "..message) 
+os.sleep(1)--nospamplz
+end

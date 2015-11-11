@@ -1,0 +1,10 @@
+--[[
+test string matching functionality
+--]]
+
+
+local s = "-2 0"
+for num in string.gmatch(s, "%S+") do --Where "%S+" is the string pattern.
+    print(num)
+end
+

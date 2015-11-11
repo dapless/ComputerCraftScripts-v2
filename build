@@ -1,14 +1,20 @@
---a list of usefull general purpose constructioin functions.
+
+--a list of usefull general purpose 
+--constructioin functions.
 
 os.loadAPI("gps")
 
-walllayer=1 --keeps track of what layer the wall is at
-blocknumber=0 --what number block was just layed in the wall layer
-floorflag=0 --keeps track of what direction to turn next.
+walllayer=1 --keeps track of what 
+--layer the wall is at
+blocknumber=0 --what number block was 
+--just layed in the wall layer
+floorflag=0 --keeps track of what 
+--direction to turn next.
 --if 0 then left
 --if 1 then right
 
-window=0--decides if there should be a window
+window=0--decides if there should be a
+-- window
 --build a floor
 floorflag=1
 curslot=1
@@ -18,7 +24,11 @@ digDown()--first block is special case
 placeDown()
 for k=1, width do
 for f=1, length-1 do
-gps.goto(gps.getforback(),gps.getleftright(),0)--make sure you're at the right height before laying any blocks.
+gps.goto(gps.getforback(),
+		 gps.getleftright(),
+		 0)
+--make sure you're at the right height
+--before laying any blocks.
 
 digDown()
 placeDown()
@@ -31,13 +41,15 @@ end
 end
 if (k<tonumber(width)) then
 	if floorflag==1 then	
-		digDown()--place block at end of row
+		digDown()--place block at end 
+		--of row
 		placeDown()
 		gps.turnRight()
 		dig()
 		gps.forward()
 		gps.turnRight()
-		digDown()--place block at start of row
+		digDown()--place block at 
+		--start of row
 		placeDown()
 		dig()
 		--gps.forward()
@@ -59,9 +71,13 @@ if (k<tonumber(width)) then
 		floorflag=1
 	end
 else
+if k==width and f==length then
+--but only if it's the last block 
+--of the last row.
 digDown()
-placeDown()--last blcok is also special case
-
+placeDown()--last blcok is also 
+		   --special case
+end
 	--[[gps.turnRight()
 	gps.turnRight()
 	gps.up()
@@ -73,7 +89,8 @@ end
 print("done with floor")
 end
 
---make turtle go down until it hits ground
+--make turtle go down until it hits 
+--ground
 function down()
 while not turtle.detectDown() do
 gps.down()
@@ -87,7 +104,8 @@ end end
 
 
 -- build 4 walls 
-function room(roomheight,width,length)--1st arg is hieght, second is width
+function room(roomheight,width,length)
+--1st arg is hieght, second is width
 
 for j=1,roomheight do
 layer(width,length)
@@ -118,7 +136,8 @@ function wall(width)
 	end
 end
 
-function tallwall(width,height)--build a wall of arbitrary height
+function tallwall(width,height)--build
+-- a wall of arbitrary height
 gps.up()
 for h=0,height do
 wall(width)
@@ -160,10 +179,14 @@ turtle.place()
 end
 
 function digDown()
+--only dig down if there is actually something below.
+--this saves time selecting inv slot
+if turtle.detectDown() then
 turtle.select(16)
 turtle.digDown()
 turtle.dropDown(16)
 turtle.select(curslot)
+end
 end
 
 function dig()

@@ -29,6 +29,10 @@ function getleftright()
 return leftright
 end
 
+function getheight()
+return height
+end
+
 function forward(howfar,avoid)
 attempt=0
 howfar=howfar or 1
@@ -61,7 +65,9 @@ if turtle.forward() then
 		return true
 	end
 else--if it's out of fuel attempt to refuel
+if refuel then
 refuel()
+end
 
 return false
 end
@@ -69,11 +75,15 @@ end
 end
 
 function refuel()
+if turtle.getFuelLevel()==0 then
+--only attempt to refuel if the turtle
+--is out of fuel.
 for i = 1, 16 do -- loop through the slots
   turtle.select(i) -- change to the slot
   if turtle.refuel(0) then -- if it's valid fuel
     turtle.refuel(64)
   end
+end
 end
 end
 

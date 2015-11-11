@@ -1,44 +1,59 @@
---move randomly until encounter player then attack.
---when player is found broadcast position let other robots swarm towards player.
-
---all robots must be released from same tile for this to work.
-
 os.loadAPI("gps")
 os.loadAPI("build")
 rednet.open("left")
+
+--[[	
+move domly until encounter player then
+attack. when player is found broadcast
+position and let other robots swarm 
+towards player. all robots must be 
+released from same tile for the swarm
+to stay in sync.
+--]]
+
 local x=0
 local y=0
+i=1
+coords={}
+--main loop
 while true do
---before move see if someone found something
-local senderId, message, protocol =rednet.receive(2)--wait two sec for incoming messages
-if message==nil then
-	message="nil"
+--before move see if a turtle found
+--something
+--wait two sec for incoming messages:
+oldmessage=message
+local senderId, message, protocol =rednet.receive(2)
+message=tostring(message)
+--print("raw message: "..message)
+	if message~=nil then --if the message isn't empty search it.
+		for num in string.gmatch(message, "%S+") do--parse incoming coords to that they can be fed to goto func.
+		--%A= all not letters
+		--print("num: "..tostring(num))
+		coords[i]=num
+		i=i+1
+		end
+		i=1
+		
 	end
-for word in string.gmatch(message, "%s") do--parse incoming coords to that they can be fed to goto func.
-local i=1
+	
+  print("goto: "..tostring(coords[1]).." "..tostring(coords[2]))
 
---coords[i]=word
-if i==1 then
-x=word
+--move to target location, unless 
+--target is at defualt coords.
+if message~=oldmessage then--only move if they are new coords
+if coords[1]~=nil then
+if coords[2]~=nil then--also don't try to move until valid coords are recieved.
+gps.goto(tonumber(coords[1]),tonumber(coords[2]),gps.getheight())
 end
-if i==2 then
-y=word
 end
-i=i+1
 end
-  print("recieved: "..x.." "..y)
---if x~=0 and y~=0 then--if coords were recieved head to that locatin.
---if x and y arne't 0 move, ( if it isn't the start space)
---print("recieved: "..x.." "..y)
-gps.goto(tonumber(x),tonumber(y))
---end
 
-
- 
-
+ coords[1]=nil
+ coords[2]=nil
+--reset the coords
 
 	
 if not gps.randomMove() then--if you can't move or detect anything then it must be a mob, therefore attack.
+	--false=don't refuel, this allows faster  mob detection.
 	if not turtle.detect() then
 		turtle.attack()-- if there was an attac broadcast coords so other robots can help
 		coordinates=tostring(gps.getforback())
@@ -51,7 +66,8 @@ if not gps.randomMove() then--if you can't move or detect anything then it must 
 		end
 		end
 gps.fullDown()--go back to ground level.
+
 end
 
 
-gps.goto(0,0,0)
+
