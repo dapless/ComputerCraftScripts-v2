@@ -1,0 +1,20 @@
+--[[listen and display all broadcasts
+]]--
+line=0
+Mon = peripheral.wrap("right")
+ Mon.clear()
+ Mon.setCursorPos(1,1)
+while true do
+
+rednet.open("left")
+local senderId, message, protocol =rednet.receive(2)
+if message ~=nill then
+peripheral.call( "right", "write", tostring(message) )
+    Mon.setCursorPos(1,line)
+    line=line+1
+    end
+    if line==10 then
+    line=0
+    Mon.clear()
+    end
+end

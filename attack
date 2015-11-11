@@ -22,10 +22,10 @@ while true do
 --wait two sec for incoming messages:
 oldmessage=message
 local senderId, message, protocol =rednet.receive(2)
-message=tostring(message)
+--message=tostring(message)
 --print("raw message: "..message)
 	if message~=nil then --if the message isn't empty search it.
-		for num in string.gmatch(message, "%S+") do--parse incoming coords to that they can be fed to goto func.
+		for num in string.gmatch(tostring(message), "%S+") do--parse incoming coords to that they can be fed to goto func.
 		--%A= all not letters
 		--print("num: "..tostring(num))
 		coords[i]=num
@@ -40,11 +40,11 @@ message=tostring(message)
 --move to target location, unless 
 --target is at defualt coords.
 if message~=oldmessage then--only move if they are new coords
-if coords[1]~=nil then
-if coords[2]~=nil then--also don't try to move until valid coords are recieved.
+--if coords[1]~=nil then
+--if coords[2]~=nil then--also don't try to move until valid coords are recieved.
 gps.goto(tonumber(coords[1]),tonumber(coords[2]),gps.getheight())
-end
-end
+--end
+--end
 end
 
  coords[1]=nil
@@ -59,7 +59,7 @@ if not gps.randomMove() then--if you can't move or detect anything then it must 
 		coordinates=tostring(gps.getforback())
 		coordinates=coordinates.." "..tostring(gps.getleftright())
 		rednet.broadcast(coordinates)
-		print("broadcasted: "..coordinates)
+		print("attack : "..coordinates)
 		--gps.goto(0,0,0)--totally works
 		
 		
