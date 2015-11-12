@@ -3,12 +3,13 @@ os.loadAPI("build")
 rednet.open("left")
 
 --[[	
-move domly until encounter player then
-attack. when player is found broadcast
+move randomly until a player or mob
+is encountered, then attack. when
+player is found broadcast
 position and let other robots swarm 
 towards player. all robots must be 
-released from same tile for the swarm
-to stay in sync.
+released from same tile for the
+swarm to stay in sync.
 --]]
 
 local x=0
