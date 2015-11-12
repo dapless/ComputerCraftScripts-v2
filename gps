@@ -33,22 +33,16 @@ function getheight()
 return height
 end
 
-function forward(howfar,avoid)
+function forward()
 attempt=0
-howfar=howfar or 1
-for d=1,howfar do
---avoid colisions
-if avoid==false then
-build.dig()
-else
+
 
 while turtle.detect() do
 up()
 if turtle.detectUp() then
 break
 end
-end
-end
+
 
 if turtle.forward() then
 	if direction==1 then--facing north

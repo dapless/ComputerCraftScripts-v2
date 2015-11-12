@@ -36,7 +36,7 @@ local senderId, message, protocol =rednet.receive(2)
 		
 	end
 	
-  print("goto: "..tostring(coords[1]).." "..tostring(coords[2]))
+  --print("goto: "..tostring(coords[1]).." "..tostring(coords[2]))
 
 --move to target location, unless 
 --target is at defualt coords.
@@ -67,6 +67,7 @@ if not gps.randomMove() then--if you can't move or detect anything then it must 
 		end
 		end
 gps.fullDown()--go back to ground level.
+--os.sleep(1)--give the server a break
 
 end
 
