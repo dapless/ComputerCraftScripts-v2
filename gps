@@ -42,6 +42,7 @@ up()
 if turtle.detectUp() then
 break
 end
+end
 
 
 if turtle.forward() then
@@ -66,7 +67,7 @@ end
 return false
 end
 end
-end
+
 
 function refuel()
 if turtle.getFuelLevel()==0 then

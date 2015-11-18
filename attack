@@ -26,7 +26,8 @@ local senderId, message, protocol =rednet.receive(2)
 --message=tostring(message)
 --print("raw message: "..message)
 	if message~=nil then --if the message isn't empty search it.
-		for num in string.gmatch(tostring(message), "%S+") do--parse incoming coords to that they can be fed to goto func.
+	message=tostring(message)
+		for num in string.gmatch(message, "%S+") do--parse incoming coords to that they can be fed to goto func.
 		--%A= all not letters
 		--print("num: "..tostring(num))
 		coords[i]=num
