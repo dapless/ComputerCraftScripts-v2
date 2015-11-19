@@ -1,5 +1,5 @@
 os.loadAPI("gps")
-os.loadAPI("build")
+--os.loadAPI("build")
 rednet.open("left")
 
 --[[	
@@ -25,9 +25,9 @@ local senderId, message, protocol =rednet.receive(2)
 
 Smessage = tostring(message)
 	if message ~= nil then --if the message isn't empty search it.
+	print("attack at "..Smessage)
 		for num in string.gmatch(Smessage, "%S+") do--parse incoming coords to that they can be fed to goto func. %S all not spaces
 			coords[i] = num
-			--print("print num: "..tostring(num))
 			i=i+1
 		end
 		i=1

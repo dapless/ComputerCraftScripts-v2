@@ -34,8 +34,13 @@ return height
 end
 
 function forward()
+	upness=0
 	while turtle.detect() do --so long as there is something infront of the turtle attempt to move up to avoid it. If the turte encounters an obsticle then stop moving up.
 		up()
+		upness=upness+1--keep track of distanc traveled.
+		if upness>10 then--don't try to go more than 10 blocks up. this prevents deadlock in which two turtle are trying to go up past each other.
+			break
+		end
 		if turtle.detectUp() then
 			break
 		end
