@@ -34,74 +34,67 @@ return height
 end
 
 function forward()
-attempt=0
-
-
-while turtle.detect() do
-up()
-if turtle.detectUp() then
-break
-end
-end
-
-
-if turtle.forward() then
-	if direction==1 then--facing north
-		forback=forback+1
-		return true
-	elseif direction==3 then--facing south
-		forback=forback-1
-		return true
-	elseif direction==2 then --facing east
-		leftright=leftright+1
-		return true
-	else 					--facing west
-		leftright=leftright-1
-		return true
+	while turtle.detect() do --so long as there is something infront of the turtle attempt to move up to avoid it. If the turte encounters an obsticle then stop moving up.
+		up()
+		if turtle.detectUp() then
+			break
+		end
 	end
-else--if it's out of fuel attempt to refuel
-if refuel then
-refuel()
-end
 
-return false
-end
+	if turtle.forward() then
+		if direction==1 then--facing north
+			forback=forback+1
+			return true
+		elseif direction==3 then--facing south
+			forback=forback-1
+			return true
+		elseif direction==2 then --facing east
+			leftright=leftright+1
+			return true
+		else 					--facing west
+			leftright=leftright-1
+			return true
+		end
+	else
+		return false
+	end
 end
 
 
 function refuel()
-if turtle.getFuelLevel()==0 then
---only attempt to refuel if the turtle
---is out of fuel.
-for i = 1, 16 do -- loop through the slots
-  turtle.select(i) -- change to the slot
-  if turtle.refuel(0) then -- if it's valid fuel
-    turtle.refuel(64)
-  end
-end
-end
+	if turtle.getFuelLevel()==0 then
+		--only attempt to refuel if the turtle
+		--is out of fuel.
+		for i = 1, 16 do -- loop through the slots
+			turtle.select(i) -- change to the slot
+			if turtle.refuel(0) then -- if it's valid fuel
+				turtle.refuel(64)
+			end
+		end
+	end
 end
 
 function turnRight()
-turtle.turnRight()
-if direction<4 then
-direction=direction+1
-else direction=1
-end
+	turtle.turnRight()
+		if direction<4 then
+			direction=direction+1
+		else direction=1
+	end
 end
 
 function facedirection(newdir)
-while direction~=newdir do
-turnRight()
-end
+	while direction~=newdir do
+		turnRight()
+	end
 end
 
 function turnLeft()
-turtle.turnLeft()
-if direction>1 then
-direction=direction-1
-else direction=4
-end
+	turtle.turnLeft()
+	if direction>1 then
+		direction=direction-1
+	else 
+		direction=4
+	end
 end
 
 function fullDown()--go down until hit ground
@@ -149,10 +142,10 @@ function goto(northsouth,eastwest,destheight)
 destheight=destheight or height
 --go to pos in northsouth
 while forback<northsouth do
---face proper direction
-while direction~=1 do
-	turnRight()
-end
+	--face proper direction
+	while direction~=1 do
+		turnRight()
+	end
 forward()
 end
 

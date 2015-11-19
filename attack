@@ -12,62 +12,49 @@ released from same tile for the
 swarm to stay in sync.
 --]]
 
-local x=0
-local y=0
 i=1
 coords={}
 --main loop
 while true do
---before move see if a turtle found
---something
+ --save a copy of the previous message
+
+--before move see if another turtle found something
 --wait two sec for incoming messages:
 oldmessage=message
 local senderId, message, protocol =rednet.receive(2)
---message=tostring(message)
---print("raw message: "..message)
-	if message~=nil then --if the message isn't empty search it.
-	message=tostring(message)
-		for num in string.gmatch(message, "%S+") do--parse incoming coords to that they can be fed to goto func.
-		--%S all not spaces
-		--print("num: "..tostring(num))
-		coords[i]=num
-		i=i+1
+
+Smessage = tostring(message)
+	if message ~= nil then --if the message isn't empty search it.
+		for num in string.gmatch(Smessage, "%S+") do--parse incoming coords to that they can be fed to goto func. %S all not spaces
+			coords[i] = num
+			--print("print num: "..tostring(num))
+			i=i+1
 		end
 		i=1
-		
 	end
 	
-  --print("goto: "..tostring(coords[1]).." "..tostring(coords[2]))
-
---move to target location, unless 
---target is at defualt coords.
-if message~=oldmessage then--only move if they are new coords
---if coords[1]~=nil then
---if coords[2]~=nil then--also don't try to move until valid coords are recieved.
+--move to target location, unless target is at defualt coords.
+if message ~= oldmessage then--only move if they are new coords
 gps.goto(tonumber(coords[1]),tonumber(coords[2]),gps.getheight())
---end
---end
 end
 
- coords[1]=nil
- coords[2]=nil
---reset the coords
-
+coords[1]=nil --reset the coords
+coords[2]=nil
 	
-if not gps.randomMove() then--if you can't move or detect anything then it must be a mob, therefore attack.
-	--false=don't refuel, this allows faster  mob detection.
+if not gps.randomMove() then --if you can't move or detect anything then it must be a mob, therefore attack.
 	if not turtle.detect() then
-		turtle.attack()-- if there was an attac broadcast coords so other robots can help
-		coordinates=tostring(gps.getforback())
-		coordinates=coordinates.." "..tostring(gps.getleftright())
-		rednet.broadcast(coordinates)
+		turtle.attack()
+		coordinates = tostring(gps.getforback())
+		coordinates = coordinates.." "..tostring(gps.getleftright())
+		rednet.broadcast(coordinates) --if there was an attac broadcast coords so other robots can help
 		print("attack : "..coordinates)
-		--gps.goto(0,0,0)--totally works
 		
-		
-		end
-		end
-gps.fullDown()--go back to ground level.
+	end
+end
+gps.down()
+--origonally the robot would go all the way back to the ground after moving. But rather than do that (which causes some performance issues due to loops)
+--just move down one space at at time. gradually fall back to the ground.
+
 --os.sleep(1)--give the server a break
 
 end
